@@ -11,6 +11,8 @@ class StoreInitial extends StoreState {}
 
 class StoreLoading extends StoreState {}
 
+class StoreLoadingMore extends StoreState {}
+
 class StoreSuccess extends StoreState {}
 
 class StoreError extends StoreState {}

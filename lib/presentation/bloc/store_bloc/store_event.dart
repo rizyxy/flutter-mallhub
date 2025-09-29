@@ -8,3 +8,5 @@ sealed class StoreEvent extends Equatable {
 }
 
 class FetchStores extends StoreEvent {}
+
+class FetchMoreStores extends StoreEvent {}

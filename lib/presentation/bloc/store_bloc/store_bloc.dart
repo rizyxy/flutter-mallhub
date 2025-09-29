@@ -16,5 +16,16 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         emit(StoreError());
       }
     });
+
+    on<FetchMoreStores>((event, emit) async {
+      emit(StoreLoadingMore());
+
+      try {
+        await Future.delayed(Duration(seconds: 2));
+        emit(StoreSuccess());
+      } catch (e) {
+        emit(StoreError());
+      }
+    });
   }
 }

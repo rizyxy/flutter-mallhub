@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 class StoreModel {
-  final String id;
+  final int id;
   final String name;
   final String logo;
-  final String floorId;
+  final int floorId;
   final String floorName;
   StoreModel({
     required this.id,
@@ -16,10 +16,10 @@ class StoreModel {
   });
 
   StoreModel copyWith({
-    String? id,
+    int? id,
     String? name,
     String? logo,
-    String? floorId,
+    int? floorId,
     String? floorName,
   }) {
     return StoreModel(
@@ -33,11 +33,11 @@ class StoreModel {
 
   factory StoreModel.fromMap(Map<String, dynamic> map) {
     return StoreModel(
-      id: map['id'].toString(),
+      id: map['id'] as int,
       name: map['name'] as String,
       logo: map['logo'] as String,
-      floorId: map['floor']['floor_id'].toString(),
-      floorName: map['floor']['floor_name'] as String,
+      floorId: map['floor']['id'] as int,
+      floorName: map['floor']['name'] as String,
     );
   }
 

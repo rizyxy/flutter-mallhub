@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_bloc/store_bloc.dart';
+import 'package:flutter_mallhub/presentation/screens/store_query_page.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_grid.dart';
 
 class StorePage extends StatelessWidget {
@@ -29,7 +30,12 @@ class StorePage extends StatelessWidget {
                     height: 10,
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StoreQueryPage()));
+                    },
                     borderRadius: BorderRadius.circular(15),
                     child: Ink(
                       padding:

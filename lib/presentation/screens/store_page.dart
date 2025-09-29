@@ -34,7 +34,12 @@ class StorePage extends StatelessWidget {
                       }
 
                       if (state is StoreLoadingMore) {
-                        return StoreGrid();
+                        return StoreGrid(
+                          key:
+                              PageStorageKey<String>('storeGridScrollPosition'),
+                          stores: state.stores,
+                          isLoadingMore: true,
+                        );
                       }
 
                       if (state is StoreSuccess) {
@@ -43,7 +48,12 @@ class StorePage extends StatelessWidget {
                               _onScrollMax(context, notification);
                               return false;
                             },
-                            child: StoreGrid());
+                            child: StoreGrid(
+                              key: PageStorageKey<String>(
+                                  'storeGridScrollPosition'),
+                              stores: state.stores,
+                              isLoadingMore: false,
+                            ));
                       }
 
                       return SizedBox.shrink();

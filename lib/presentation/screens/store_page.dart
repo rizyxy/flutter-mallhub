@@ -21,6 +21,28 @@ class StorePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  Text(
+                    "All Stores",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(15),
+                    child: Ink(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text("Search Store..."),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Expanded(
                     child: BlocBuilder<StoreBloc, StoreState>(
                         builder: (context, state) {

@@ -79,7 +79,7 @@ class StorePage extends StatelessWidget {
                             child: StoreGrid(
                               key: const PageStorageKey<String>(
                                   'storeGridScrollPosition'),
-                              stores: state.stores,
+                              stores: state.storePaginated.stores,
                               isLoadingMore: false,
                             ));
                       }

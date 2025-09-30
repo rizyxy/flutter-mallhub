@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mallhub/data/model/store.dart';
+import 'package:flutter_mallhub/data/paginated/store_paginated.dart';
 import 'package:flutter_mallhub/data/repository/store_repository.dart';
 
 part 'store_state.dart';
@@ -14,28 +15,37 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(StoreLoading());
 
       try {
-        List<StoreModel> stores = await _storeRepository.fetchStores();
+        StorePaginated storePaginated = await _storeRepository.fetchStores();
 
-        emit(StoreSuccess(stores: stores));
+        emit(StoreSuccess(storePaginated: storePaginated));
       } catch (e) {
         emit(StoreError());
       }
     });
 
     on<FetchMoreStores>((event, emit) async {
+      if (state is! StoreSuccess) return;
+
       StoreSuccess prevState = state as StoreSuccess;
-      List<StoreModel> prevStores = prevState.stores;
+      StorePaginated prevStorePaginated = prevState.storePaginated;
 
-      emit(StoreLoadingMore(stores: prevStores));
+      if (prevStorePaginated.cursor != null) {
+        emit(StoreLoadingMore(stores: prevStorePaginated.stores));
 
-      try {
-        List<StoreModel> newStores = await _storeRepository.fetchStores();
+        try {
+          StorePaginated newStorePaginated = await _storeRepository
+              .fetchStores(query: {'cursor': prevStorePaginated.cursor});
 
-        prevStores.addAll(newStores);
+          StorePaginated updatedStorePaginated = StorePaginated(stores: [
+            ...prevStorePaginated.stores,
+            ...newStorePaginated.stores
+          ], cursor: newStorePaginated.cursor);
 
-        emit(StoreSuccess(stores: prevStores));
-      } catch (e) {
-        emit(StoreError());
+          emit(StoreSuccess(storePaginated: updatedStorePaginated));
+        } catch (e) {
+          print(e.toString());
+          emit(StoreError());
+        }
       }
     });
   }

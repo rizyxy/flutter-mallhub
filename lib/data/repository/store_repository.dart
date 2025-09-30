@@ -2,14 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mallhub/data/model/store.dart';
+import 'package:flutter_mallhub/data/paginated/store_paginated.dart';
 import 'package:http/http.dart' as http;
 
 class StoreRepository {
-  Future<List<StoreModel>> fetchStores({Map<String, dynamic>? query}) async {
-    final Uri uri = Uri.parse(dotenv.get(
-        'SERVER_URL?name=${query?['storeName']}&floor_id=${query?['floorId']}'));
+  Future<StorePaginated> fetchStores({Map<String, dynamic>? query}) async {
+    print("Fetching...");
 
-    final response = await http.get(uri);
+    final Uri uri = Uri.parse(
+        '${dotenv.get('SERVER_URL')}/stores?cursor=${query?['cursor']}');
+
+    final response =
+        await http.get(uri, headers: {'ngrok-skip-browser-warning': 'true'});
 
     if (response.statusCode != 200) {
       throw Exception();
@@ -17,9 +21,8 @@ class StoreRepository {
 
     final data = json.decode(response.body);
 
-    List<StoreModel> stores =
-        (data as List).map((map) => StoreModel.fromMap(map)).toList();
+    final StorePaginated storePaginated = StorePaginated.fromMap(data);
 
-    return stores;
+    return storePaginated;
   }
 }

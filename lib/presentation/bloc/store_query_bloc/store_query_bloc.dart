@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mallhub/data/model/store.dart';
+import 'package:flutter_mallhub/data/paginated/store_paginated.dart';
 import 'package:flutter_mallhub/data/repository/store_repository.dart';
 
 part 'store_query_state.dart';
@@ -14,10 +15,10 @@ class StoreQueryBloc extends Bloc<StoreQueryEvent, StoreQueryState> {
       emit(StoreQueryLoading());
 
       try {
-        List<StoreModel> stores =
+        StorePaginated storePaginated =
             await _storeRepository.fetchStores(query: event.query);
 
-        emit(StoreQuerySuccess(stores: stores));
+        emit(StoreQuerySuccess(stores: storePaginated.stores));
       } catch (e) {
         emit(StoreQueryError());
       }
@@ -29,10 +30,10 @@ class StoreQueryBloc extends Bloc<StoreQueryEvent, StoreQueryState> {
       emit(StoreQueryLoadingMore(stores: prevStores));
 
       try {
-        List<StoreModel> newStores =
+        StorePaginated newStorePaginated =
             await _storeRepository.fetchStores(query: event.query);
 
-        prevStores.addAll(newStores);
+        prevStores.addAll(newStorePaginated.stores);
 
         emit(StoreQuerySuccess(stores: prevStores));
       } catch (e) {

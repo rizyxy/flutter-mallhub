@@ -21,12 +21,12 @@ class StoreLoadingMore extends StoreState {
 }
 
 class StoreSuccess extends StoreState {
-  final List<StoreModel> stores;
+  final StorePaginated storePaginated;
 
-  const StoreSuccess({required this.stores});
+  const StoreSuccess({required this.storePaginated});
 
   @override
-  List<Object?> get props => [stores];
+  List<Object?> get props => [storePaginated];
 }
 
 class StoreError extends StoreState {}

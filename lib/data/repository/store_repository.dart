@@ -72,8 +72,6 @@ class StoreRepository {
 
     List<StoreModel> results = storeDb;
 
-    print(query);
-
     // Simulate search
     if (query?['storeName'] != null) {
       results = results
@@ -89,8 +87,6 @@ class StoreRepository {
               store.floorId == int.tryParse(query!['floorId'].toString()))
           .toList();
     }
-
-    print(results);
 
     return results.toList();
   }

@@ -15,21 +15,15 @@ class StoreQueryBar extends StatefulWidget {
 class _StoreQueryBarState extends State<StoreQueryBar> {
   late final TextEditingController _storeNameController;
 
-  bool _isStoreNameEmpty = true;
-
   @override
   void initState() {
     super.initState();
     _storeNameController = TextEditingController();
     _storeNameController.addListener(() {
       if (_storeNameController.text.isEmpty) {
-        setState(() {
-          _isStoreNameEmpty = true;
-        });
+        setState(() {});
       } else if (_storeNameController.text.isNotEmpty) {
-        setState(() {
-          _isStoreNameEmpty = false;
-        });
+        setState(() {});
       }
     });
   }

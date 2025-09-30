@@ -1,93 +1,25 @@
+import 'dart:convert';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mallhub/data/model/store.dart';
+import 'package:http/http.dart' as http;
 
 class StoreRepository {
   Future<List<StoreModel>> fetchStores({Map<String, dynamic>? query}) async {
-    // Mock data
-    List<StoreModel> storeDb = [
-      StoreModel(
-          id: 1,
-          name: "Pull and Bear",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 2,
-          name: "Zara",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 3,
-          name: "Bershka",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 4,
-          name: "Executive",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 5,
-          name: "This Is April",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 6,
-          name: "Coach",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 7,
-          name: "Dior",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 8,
-          name: "Gucci",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 9,
-          name: "Zegna",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-      StoreModel(
-          id: 10,
-          name: "Massimo Duti",
-          logo: "www.google.com",
-          floorId: 1,
-          floorName: "1"),
-    ];
+    final Uri uri = Uri.parse(dotenv.get(
+        'SERVER_URL?name=${query?['storeName']}&floor_id=${query?['floorId']}'));
 
-    await Future.delayed(const Duration(seconds: 2));
+    final response = await http.get(uri);
 
-    storeDb.shuffle();
-
-    List<StoreModel> results = storeDb;
-
-    // Simulate search
-    if (query?['storeName'] != null) {
-      results = results
-          .where((store) => store.name
-              .toLowerCase()
-              .contains(query!['storeName'].toString().toLowerCase()))
-          .toList();
+    if (response.statusCode != 200) {
+      throw Exception();
     }
 
-    if (query?['floorId'] != null) {
-      results = results
-          .where((store) =>
-              store.floorId == int.tryParse(query!['floorId'].toString()))
-          .toList();
-    }
+    final data = json.decode(response.body);
 
-    return results.toList();
+    List<StoreModel> stores =
+        (data as List).map((map) => StoreModel.fromMap(map)).toList();
+
+    return stores;
   }
 }

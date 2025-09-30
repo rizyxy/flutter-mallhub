@@ -1,22 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mallhub/presentation/bloc/store_bloc/store_bloc.dart';
+import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filter_cubit.dart';
+import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
+import 'package:flutter_mallhub/presentation/widgets/store/store_grid.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_query_bar.dart';
 
 class StoreQueryPage extends StatelessWidget {
   const StoreQueryPage({super.key});
 
+  void _onScrollMax(BuildContext context, ScrollNotification notification) {
+    if (notification.metrics.pixels >= notification.metrics.maxScrollExtent) {
+      context.read<StoreQueryBloc>().add(FetchMoreStoreQuery(
+          storeName: context.read<StoreFilterCubit>().state['storeName']));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            StoreQueryBar(),
-          ],
-        ),
-      )),
+    return MultiBlocProvider(
+      providers: <BlocProvider>[
+        BlocProvider<StoreFilterCubit>(create: (context) => StoreFilterCubit()),
+        BlocProvider<StoreQueryBloc>(create: (context) => StoreQueryBloc())
+      ],
+      child: Scaffold(
+        body: SafeArea(
+            child: Padding(
+          padding: EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              StoreQueryBar(),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: BlocBuilder<StoreQueryBloc, StoreQueryState>(
+                    builder: (context, state) {
+                  if (state is StoreQueryLoading) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
+                  if (state is StoreQueryLoadingMore) {
+                    return StoreGrid(
+                        key: PageStorageKey<String>(
+                            'storeQueryGridScrollPosition'),
+                        stores: state.stores,
+                        isLoadingMore: true);
+                  }
+
+                  if (state is StoreQuerySuccess) {
+                    return NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        _onScrollMax(context, notification);
+                        return false;
+                      },
+                      child: StoreGrid(
+                          key: PageStorageKey<String>(
+                              'storeQueryGridScrollPosition'),
+                          stores: state.stores,
+                          isLoadingMore: false),
+                    );
+                  }
+
+                  return SizedBox.shrink();
+                }),
+              )
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

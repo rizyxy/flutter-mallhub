@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filter_cubit.dart';
+import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
 
 class StoreQueryBar extends StatefulWidget {
   StoreQueryBar({
@@ -57,7 +60,17 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
                 ),
                 Builder(builder: (context) {
                   if (!_isStoreNameEmpty) {
-                    return InkWell(onTap: () {}, child: Icon(Icons.search));
+                    return InkWell(
+                        onTap: () {
+                          context.read<StoreFilterCubit>().modifyQuery(
+                              'storeName', _storeNameController.text);
+
+                          context.read<StoreQueryBloc>().add(FetchStoreQuery(
+                              storeName: context
+                                  .read<StoreFilterCubit>()
+                                  .state['storeName']));
+                        },
+                        child: Icon(Icons.search));
                   }
 
                   return SizedBox.shrink();

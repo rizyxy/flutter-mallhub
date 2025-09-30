@@ -1,7 +1,7 @@
 import 'package:flutter_mallhub/data/model/store.dart';
 
 class StoreRepository {
-  Future<List<StoreModel>> fetchStores() async {
+  Future<List<StoreModel>> fetchStores({String? storeName}) async {
     // Mock data
     List<StoreModel> storeDb = [
       StoreModel(
@@ -69,6 +69,11 @@ class StoreRepository {
     await Future.delayed(Duration(seconds: 2));
 
     storeDb.shuffle();
+
+    // Simulate search
+    if (storeName != null) {
+      return storeDb.where((store) => store.name.contains(storeName)).toList();
+    }
 
     return storeDb.getRange(0, 8).toList();
   }

@@ -10,7 +10,7 @@ class FloorRepository {
     ];
 
     //Simulate API Call
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     return floorDb;
   }

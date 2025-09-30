@@ -14,9 +14,9 @@ class StoreFloorFilterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FloorBloc, FloorState>(builder: (context, state) {
       if (state is FloorLoading) {
-        return Center(
+        return const Center(
             child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: EdgeInsets.all(30),
           child: CircularProgressIndicator(),
         ));
       }
@@ -46,7 +46,7 @@ class StoreFloorFilterSection extends StatelessWidget {
                 .toList());
       }
 
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     });
   }
 }

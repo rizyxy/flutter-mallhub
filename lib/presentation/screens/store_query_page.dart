@@ -57,6 +57,13 @@ class StoreQueryPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Text(
+                "Search Stores",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               StoreQueryBar(
                 parentScaffoldKey: _storeQueryScaffoldKey,
               ),

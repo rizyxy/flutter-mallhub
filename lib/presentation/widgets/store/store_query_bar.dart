@@ -4,9 +4,9 @@ import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filte
 import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
 
 class StoreQueryBar extends StatefulWidget {
-  StoreQueryBar({
-    super.key,
-  });
+  StoreQueryBar({super.key, required this.parentScaffoldKey});
+
+  final GlobalKey<ScaffoldState> parentScaffoldKey;
 
   @override
   State<StoreQueryBar> createState() => _StoreQueryBarState();
@@ -74,11 +74,27 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
                   }
 
                   return SizedBox.shrink();
-                })
+                }),
               ],
             ),
           ),
         ),
+        SizedBox(
+          width: 10,
+        ),
+        InkWell(
+          onTap: () {
+            widget.parentScaffoldKey.currentState!.openDrawer();
+          },
+          borderRadius: BorderRadius.circular(15),
+          child: Ink(
+            padding: EdgeInsets.all(13),
+            decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(15)),
+            child: Icon(Icons.filter_alt),
+          ),
+        )
       ],
     );
   }

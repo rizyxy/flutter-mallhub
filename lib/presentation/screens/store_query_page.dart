@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_bloc/store_bloc.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filter_cubit.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
+import 'package:flutter_mallhub/presentation/widgets/store/store_filter/store_floor_filter_section.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_grid.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_query_bar.dart';
 
 class StoreQueryPage extends StatelessWidget {
-  const StoreQueryPage({super.key});
+  StoreQueryPage({super.key});
+
+  final GlobalKey<ScaffoldState> _storeQueryScaffoldKey =
+      GlobalKey<ScaffoldState>();
 
   void _onScrollMax(BuildContext context, ScrollNotification notification) {
     if (notification.metrics.pixels >= notification.metrics.maxScrollExtent) {
@@ -24,13 +28,36 @@ class StoreQueryPage extends StatelessWidget {
         BlocProvider<StoreQueryBloc>(create: (context) => StoreQueryBloc())
       ],
       child: Scaffold(
+        key: _storeQueryScaffoldKey,
+        drawer: Drawer(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    "Floor",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  StoreFloorFilterSection()
+                ],
+              ),
+            ),
+          ),
+        ),
         body: SafeArea(
             child: Padding(
           padding: EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              StoreQueryBar(),
+              StoreQueryBar(
+                parentScaffoldKey: _storeQueryScaffoldKey,
+              ),
               SizedBox(
                 height: 20,
               ),

@@ -58,23 +58,16 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
                     ),
                   ),
                 ),
-                Builder(builder: (context) {
-                  if (!_isStoreNameEmpty) {
-                    return InkWell(
-                        onTap: () {
-                          context.read<StoreFilterCubit>().modifyQuery(
-                              'storeName', _storeNameController.text);
+                InkWell(
+                    onTap: () {
+                      context
+                          .read<StoreFilterCubit>()
+                          .modifyQuery('storeName', _storeNameController.text);
 
-                          context.read<StoreQueryBloc>().add(FetchStoreQuery(
-                              storeName: context
-                                  .read<StoreFilterCubit>()
-                                  .state['storeName']));
-                        },
-                        child: const Icon(Icons.search));
-                  }
-
-                  return const SizedBox.shrink();
-                }),
+                      context.read<StoreQueryBloc>().add(FetchStoreQuery(
+                          query: context.read<StoreFilterCubit>().state));
+                    },
+                    child: const Icon(Icons.search))
               ],
             ),
           ),

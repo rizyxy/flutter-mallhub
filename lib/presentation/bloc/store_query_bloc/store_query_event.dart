@@ -8,19 +8,19 @@ sealed class StoreQueryEvent extends Equatable {
 }
 
 class FetchStoreQuery extends StoreQueryEvent {
-  final String storeName;
+  final Map<String, dynamic> query;
 
-  const FetchStoreQuery({required this.storeName});
+  const FetchStoreQuery({required this.query});
 
   @override
-  List<Object?> get props => [storeName];
+  List<Object?> get props => [query];
 }
 
 class FetchMoreStoreQuery extends StoreQueryEvent {
-  final String storeName;
+  final Map<String, dynamic> query;
 
-  const FetchMoreStoreQuery({required this.storeName});
+  const FetchMoreStoreQuery({required this.query});
 
   @override
-  List<Object?> get props => [storeName];
+  List<Object?> get props => [query];
 }

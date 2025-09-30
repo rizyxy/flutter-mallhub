@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mallhub/presentation/bloc/floor_bloc/floor_bloc.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filter_cubit.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_filter/store_floor_filter_section.dart';
@@ -14,8 +15,8 @@ class StoreQueryPage extends StatelessWidget {
 
   void _onScrollMax(BuildContext context, ScrollNotification notification) {
     if (notification.metrics.pixels >= notification.metrics.maxScrollExtent) {
-      context.read<StoreQueryBloc>().add(FetchMoreStoreQuery(
-          storeName: context.read<StoreFilterCubit>().state['storeName']));
+      context.read<StoreQueryBloc>().add(
+          FetchMoreStoreQuery(query: context.read<StoreFilterCubit>().state));
     }
   }
 
@@ -24,7 +25,9 @@ class StoreQueryPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider>[
         BlocProvider<StoreFilterCubit>(create: (context) => StoreFilterCubit()),
-        BlocProvider<StoreQueryBloc>(create: (context) => StoreQueryBloc())
+        BlocProvider<StoreQueryBloc>(create: (context) => StoreQueryBloc()),
+        BlocProvider<FloorBloc>(
+            create: (context) => FloorBloc()..add(FetchFloors()))
       ],
       child: Scaffold(
         key: _storeQueryScaffoldKey,

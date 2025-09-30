@@ -15,7 +15,7 @@ class StoreQueryBloc extends Bloc<StoreQueryEvent, StoreQueryState> {
 
       try {
         List<StoreModel> stores =
-            await _storeRepository.fetchStores(storeName: event.storeName);
+            await _storeRepository.fetchStores(query: event.query);
 
         emit(StoreQuerySuccess(stores: stores));
       } catch (e) {
@@ -30,7 +30,7 @@ class StoreQueryBloc extends Bloc<StoreQueryEvent, StoreQueryState> {
 
       try {
         List<StoreModel> newStores =
-            await _storeRepository.fetchStores(storeName: event.storeName);
+            await _storeRepository.fetchStores(query: event.query);
 
         prevStores.addAll(newStores);
 

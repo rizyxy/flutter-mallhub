@@ -1,7 +1,7 @@
 import 'package:flutter_mallhub/data/model/store.dart';
 
 class StoreRepository {
-  Future<List<StoreModel>> fetchStores({String? storeName}) async {
+  Future<List<StoreModel>> fetchStores({Map<String, dynamic>? query}) async {
     // Mock data
     List<StoreModel> storeDb = [
       StoreModel(
@@ -70,11 +70,28 @@ class StoreRepository {
 
     storeDb.shuffle();
 
+    List<StoreModel> results = storeDb;
+
+    print(query);
+
     // Simulate search
-    if (storeName != null) {
-      return storeDb.where((store) => store.name.contains(storeName)).toList();
+    if (query?['storeName'] != null) {
+      results = results
+          .where((store) => store.name
+              .toLowerCase()
+              .contains(query!['storeName'].toString().toLowerCase()))
+          .toList();
     }
 
-    return storeDb.getRange(0, 8).toList();
+    if (query?['floorId'] != null) {
+      results = results
+          .where((store) =>
+              store.floorId == int.tryParse(query!['floorId'].toString()))
+          .toList();
+    }
+
+    print(results);
+
+    return results.toList();
   }
 }

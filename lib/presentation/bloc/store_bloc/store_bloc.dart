@@ -7,7 +7,7 @@ part 'store_state.dart';
 part 'store_event.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {
-  StoreRepository _storeRepository = StoreRepository();
+  final StoreRepository _storeRepository = StoreRepository();
 
   StoreBloc() : super(StoreInitial()) {
     on<FetchStores>((event, emit) async {

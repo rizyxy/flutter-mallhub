@@ -12,8 +12,8 @@ class StoreGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      physics: BouncingScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const BouncingScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.7,
           crossAxisSpacing: 20,
@@ -21,7 +21,7 @@ class StoreGrid extends StatelessWidget {
       itemCount: stores.length + (isLoadingMore ? 8 : 0),
       itemBuilder: (context, index) {
         if (index >= stores.length) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         return ItemCard(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_mallhub/presentation/bloc/store_bloc/store_bloc.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filter_cubit.dart';
 import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
 import 'package:flutter_mallhub/presentation/widgets/store/store_filter/store_floor_filter_section.dart';
@@ -29,10 +28,10 @@ class StoreQueryPage extends StatelessWidget {
       ],
       child: Scaffold(
         key: _storeQueryScaffoldKey,
-        drawer: Drawer(
+        drawer: const Drawer(
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(30),
+              padding: EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -51,23 +50,23 @@ class StoreQueryPage extends StatelessWidget {
         ),
         body: SafeArea(
             child: Padding(
-          padding: EdgeInsets.all(30),
+          padding: const EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               StoreQueryBar(
                 parentScaffoldKey: _storeQueryScaffoldKey,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Expanded(
                 child: BlocBuilder<StoreQueryBloc, StoreQueryState>(
                     builder: (context, state) {
                   if (state is StoreQueryLoading) {
-                    return Center(
+                    return const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(30),
+                        padding: EdgeInsets.all(30),
                         child: CircularProgressIndicator(),
                       ),
                     );
@@ -75,7 +74,7 @@ class StoreQueryPage extends StatelessWidget {
 
                   if (state is StoreQueryLoadingMore) {
                     return StoreGrid(
-                        key: PageStorageKey<String>(
+                        key: const PageStorageKey<String>(
                             'storeQueryGridScrollPosition'),
                         stores: state.stores,
                         isLoadingMore: true);
@@ -88,14 +87,14 @@ class StoreQueryPage extends StatelessWidget {
                         return false;
                       },
                       child: StoreGrid(
-                          key: PageStorageKey<String>(
+                          key: const PageStorageKey<String>(
                               'storeQueryGridScrollPosition'),
                           stores: state.stores,
                           isLoadingMore: false),
                     );
                   }
 
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }),
               )
             ],

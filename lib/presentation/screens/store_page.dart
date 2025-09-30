@@ -18,15 +18,15 @@ class StorePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     "All Stores",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   InkWell(
@@ -38,24 +38,24 @@ class StorePage extends StatelessWidget {
                     },
                     borderRadius: BorderRadius.circular(15),
                     child: Ink(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(15)),
-                      child: Text("Search Store..."),
+                      child: const Text("Search Store..."),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Expanded(
                     child: BlocBuilder<StoreBloc, StoreState>(
                         builder: (context, state) {
                       if (state is StoreLoading) {
-                        return Center(
+                        return const Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(30),
+                            padding: EdgeInsets.all(30),
                             child: CircularProgressIndicator(),
                           ),
                         );
@@ -63,8 +63,8 @@ class StorePage extends StatelessWidget {
 
                       if (state is StoreLoadingMore) {
                         return StoreGrid(
-                          key:
-                              PageStorageKey<String>('storeGridScrollPosition'),
+                          key: const PageStorageKey<String>(
+                              'storeGridScrollPosition'),
                           stores: state.stores,
                           isLoadingMore: true,
                         );
@@ -77,14 +77,14 @@ class StorePage extends StatelessWidget {
                               return false;
                             },
                             child: StoreGrid(
-                              key: PageStorageKey<String>(
+                              key: const PageStorageKey<String>(
                                   'storeGridScrollPosition'),
                               stores: state.stores,
                               isLoadingMore: false,
                             ));
                       }
 
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }),
                   )
                 ],

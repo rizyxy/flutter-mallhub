@@ -8,7 +8,7 @@ class StoreFloorFilterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return const Wrap(
       children: <Widget>[
         InkWell(
           child: ItemPill(

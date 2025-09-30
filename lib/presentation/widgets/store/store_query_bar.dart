@@ -4,7 +4,7 @@ import 'package:flutter_mallhub/presentation/bloc/store_filter_cubit/store_filte
 import 'package:flutter_mallhub/presentation/bloc/store_query_bloc/store_query_bloc.dart';
 
 class StoreQueryBar extends StatefulWidget {
-  StoreQueryBar({super.key, required this.parentScaffoldKey});
+  const StoreQueryBar({super.key, required this.parentScaffoldKey});
 
   final GlobalKey<ScaffoldState> parentScaffoldKey;
 
@@ -40,7 +40,7 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
       children: <Widget>[
         Expanded(
           child: Ink(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(15)),
@@ -49,8 +49,8 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
                 Expanded(
                   child: TextFormField(
                     controller: _storeNameController,
-                    style: TextStyle(fontSize: 15),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15),
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
                       hintText: "Search Store",
@@ -70,16 +70,16 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
                                   .read<StoreFilterCubit>()
                                   .state['storeName']));
                         },
-                        child: Icon(Icons.search));
+                        child: const Icon(Icons.search));
                   }
 
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }),
               ],
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         InkWell(
@@ -88,11 +88,11 @@ class _StoreQueryBarState extends State<StoreQueryBar> {
           },
           borderRadius: BorderRadius.circular(15),
           child: Ink(
-            padding: EdgeInsets.all(13),
+            padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(15)),
-            child: Icon(Icons.filter_alt),
+            child: const Icon(Icons.filter_alt),
           ),
         )
       ],

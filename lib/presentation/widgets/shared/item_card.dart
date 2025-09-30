@@ -17,12 +17,12 @@ class ItemCard extends StatelessWidget {
               child: Container(
             color: Colors.grey.shade200,
           )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             itemName,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
           Text(itemInformation)
         ],

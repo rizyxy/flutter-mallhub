@@ -19,32 +19,42 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
         emit(StoreSuccess(storePaginated: storePaginated));
       } catch (e) {
-        emit(StoreError());
+        emit(StoreError(errorMessage: e.toString()));
       }
     });
 
     on<FetchMoreStores>((event, emit) async {
-      if (state is! StoreSuccess) return;
+      if (!(state is StoreSuccess || state is StoreLoadMoreError)) return;
 
-      StoreSuccess prevState = state as StoreSuccess;
-      StorePaginated prevStorePaginated = prevState.storePaginated;
+      final StorePaginated prevStorePaginated;
+      final String? cursor;
 
-      if (prevStorePaginated.cursor != null) {
+      if (state is StoreSuccess) {
+        prevStorePaginated = (state as StoreSuccess).storePaginated;
+        cursor = prevStorePaginated.cursor;
+      } else if (state is StoreLoadMoreError) {
+        prevStorePaginated = (state as StoreLoadMoreError).storePaginated;
+        cursor = prevStorePaginated.cursor;
+      } else {
+        return;
+      }
+
+      if (cursor != null) {
         emit(StoreLoadingMore(stores: prevStorePaginated.stores));
 
         try {
-          StorePaginated newStorePaginated = await _storeRepository
-              .fetchStores(query: {'cursor': prevStorePaginated.cursor});
+          final StorePaginated newStorePaginated =
+              await _storeRepository.fetchStores(query: {'cursor': cursor});
 
-          StorePaginated updatedStorePaginated = StorePaginated(stores: [
+          final StorePaginated updatedStorePaginated = StorePaginated(stores: [
             ...prevStorePaginated.stores,
             ...newStorePaginated.stores
           ], cursor: newStorePaginated.cursor);
 
           emit(StoreSuccess(storePaginated: updatedStorePaginated));
         } catch (e) {
-          print(e.toString());
-          emit(StoreError());
+          emit(StoreLoadMoreError(
+              storePaginated: prevStorePaginated, errorMessage: e.toString()));
         }
       }
     });

@@ -29,4 +29,21 @@ class StoreSuccess extends StoreState {
   List<Object?> get props => [storePaginated];
 }
 
-class StoreError extends StoreState {}
+class StoreError extends StoreState {
+  final String? errorMessage;
+
+  const StoreError({this.errorMessage});
+
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+class StoreLoadMoreError extends StoreState {
+  final StorePaginated storePaginated;
+  final String? errorMessage;
+
+  const StoreLoadMoreError({required this.storePaginated, this.errorMessage});
+
+  @override
+  List<Object?> get props => [storePaginated, errorMessage];
+}

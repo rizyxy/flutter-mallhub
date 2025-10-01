@@ -50,9 +50,35 @@ class StorePage extends StatelessWidget {
                     height: 20,
                   ),
                   Expanded(
-                    child: BlocBuilder<StoreBloc, StoreState>(
-                        builder: (context, state) {
-                      if (state is StoreLoading) {
+                    child: BlocConsumer<StoreBloc, StoreState>(
+                        listener: (context, state) async {
+                      if (state is StoreLoadMoreError) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                state.errorMessage ?? "An error has occured")));
+
+                        await Future.delayed(Duration(seconds: 2));
+
+                        if (context.mounted) {
+                          context.read<StoreBloc>().add(FetchMoreStores());
+                        }
+                      }
+
+                      if (state is StoreError) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(state.errorMessage ??
+                                  "An error has occured")));
+                        }
+
+                        await Future.delayed(Duration(seconds: 2));
+
+                        if (context.mounted) {
+                          context.read<StoreBloc>().add(FetchStores());
+                        }
+                      }
+                    }, builder: (context, state) {
+                      if (state is StoreLoading || state is StoreError) {
                         return const Center(
                           child: Padding(
                             padding: EdgeInsets.all(30),
@@ -66,6 +92,15 @@ class StorePage extends StatelessWidget {
                           key: const PageStorageKey<String>(
                               'storeGridScrollPosition'),
                           stores: state.stores,
+                          isLoadingMore: true,
+                        );
+                      }
+
+                      if (state is StoreLoadMoreError) {
+                        return StoreGrid(
+                          key: const PageStorageKey<String>(
+                              'storeGridScrollPosition'),
+                          stores: state.storePaginated.stores,
                           isLoadingMore: true,
                         );
                       }

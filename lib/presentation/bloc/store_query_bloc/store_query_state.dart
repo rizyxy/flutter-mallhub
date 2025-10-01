@@ -12,21 +12,39 @@ class StoreQueryInitial extends StoreQueryState {}
 class StoreQueryLoading extends StoreQueryState {}
 
 class StoreQueryLoadingMore extends StoreQueryState {
-  final List<StoreModel> stores;
+  final StorePaginated storePaginated;
 
-  const StoreQueryLoadingMore({required this.stores});
+  const StoreQueryLoadingMore({required this.storePaginated});
 
   @override
-  List<Object?> get props => [stores];
+  List<Object?> get props => [storePaginated];
 }
 
 class StoreQuerySuccess extends StoreQueryState {
-  final List<StoreModel> stores;
+  final StorePaginated storePaginated;
 
-  const StoreQuerySuccess({required this.stores});
+  const StoreQuerySuccess({required this.storePaginated});
 
   @override
-  List<Object?> get props => [stores];
+  List<Object?> get props => [storePaginated];
 }
 
-class StoreQueryError extends StoreQueryState {}
+class StoreQueryError extends StoreQueryState {
+  final String? errorMessage;
+
+  const StoreQueryError({this.errorMessage});
+
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+class StoreQueryLoadMoreError extends StoreQueryState {
+  final StorePaginated storePaginated;
+  final String? errorMessage;
+
+  const StoreQueryLoadMoreError(
+      {required this.storePaginated, this.errorMessage});
+
+  @override
+  List<Object?> get props => [storePaginated, errorMessage];
+}

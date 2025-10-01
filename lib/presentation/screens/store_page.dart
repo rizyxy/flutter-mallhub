@@ -53,11 +53,13 @@ class StorePage extends StatelessWidget {
                     child: BlocConsumer<StoreBloc, StoreState>(
                         listener: (context, state) async {
                       if (state is StoreLoadMoreError) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                state.errorMessage ?? "An error has occured")));
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(state.errorMessage ??
+                                  "An error has occured")));
+                        }
 
-                        await Future.delayed(Duration(seconds: 2));
+                        await Future.delayed(const Duration(seconds: 2));
 
                         if (context.mounted) {
                           context.read<StoreBloc>().add(FetchMoreStores());
@@ -71,7 +73,7 @@ class StorePage extends StatelessWidget {
                                   "An error has occured")));
                         }
 
-                        await Future.delayed(Duration(seconds: 2));
+                        await Future.delayed(const Duration(seconds: 2));
 
                         if (context.mounted) {
                           context.read<StoreBloc>().add(FetchStores());

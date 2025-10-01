@@ -71,8 +71,23 @@ class StoreQueryPage extends StatelessWidget {
                 height: 20,
               ),
               Expanded(
-                child: BlocBuilder<StoreQueryBloc, StoreQueryState>(
-                    builder: (context, state) {
+                child: BlocConsumer<StoreQueryBloc, StoreQueryState>(
+                    listener: (context, state) async {
+                  if (state is StoreQueryError) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              state.errorMessage ?? "An error has occured")));
+                    }
+
+                    await Future.delayed(const Duration(seconds: 2));
+
+                    if (context.mounted) {
+                      context.read<StoreQueryBloc>().add(FetchMoreStoreQuery(
+                          query: context.read<StoreFilterCubit>().state));
+                    }
+                  }
+                }, builder: (context, state) {
                   if (state is StoreQueryLoading) {
                     return const Center(
                       child: Padding(
@@ -86,7 +101,7 @@ class StoreQueryPage extends StatelessWidget {
                     return StoreGrid(
                         key: const PageStorageKey<String>(
                             'storeQueryGridScrollPosition'),
-                        stores: state.stores,
+                        stores: state.storePaginated.stores,
                         isLoadingMore: true);
                   }
 
@@ -99,7 +114,7 @@ class StoreQueryPage extends StatelessWidget {
                       child: StoreGrid(
                           key: const PageStorageKey<String>(
                               'storeQueryGridScrollPosition'),
-                          stores: state.stores,
+                          stores: state.storePaginated.stores,
                           isLoadingMore: false),
                     );
                   }
